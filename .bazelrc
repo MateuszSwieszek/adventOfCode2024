@@ -1,0 +1,3 @@
+build:dbg --compilation_mode=dbg
+build:dbg --cxxopt="-g"
+build:dbg --cxxopt="-O0"
