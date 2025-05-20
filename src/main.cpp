@@ -16,20 +16,65 @@ int main() {
     int counter = 0;
     bool isThresholdOK{false}, allPositive{false}, allNegative{false};
     std::for_each(matrix_diff.begin(), matrix_diff.end(), [&](const std::vector<int>& vec) {
-       isThresholdOK = std::any_of(vec.begin(), vec.end(), [&](int val){
-        return abs(val) > 3;
-       });
-       allPositive = std::any_of(vec.begin(), vec.end(), [&](int val){
-        return val > 0;
-       });
-        allNegative = std::any_of(vec.begin(), vec.end(), [&](int val){
-        return val < 0;
-       });
+
+        int strike = 0;
+        int tmo_diff;
+        isThresholdOK = std::all_of(vec.begin(), vec.end(), [&](int val){
+            bool result = true;
+            if (abs(val) <= 3){
+                result = true;
+            }
+            else{
+                strike++;
+                tmp_diff = val;
+                if (strike<=1){
+                    result = true;
+                }
+                else{
+                    result = false;
+                }
+            }
+            return result;
+        });
+        allPositive = std::all_of(vec.begin(), vec.end(), [&](int val){
+            bool result = true;
+            if (val > 0){
+                result = true;
+            }
+            else{
+                strike++;
+                if (strike<=1){
+                    result = true;
+                }
+                else{
+                    result = false;
+                }
+            }
+            return result;
+        });
+        allNegative = std::all_of(vec.begin(), vec.end(), [&](int val){
+            bool result = true;
+            if (val < 0){
+                result = true;
+            }
+            else{
+                strike++;
+                if (strike<=1){
+                    result = true;
+                }
+                else{
+                    result = false;
+                }
+            }
+            return result;
+        });
         std::for_each(vec.begin(), vec.end(), [](int val) {
             std::cout << val << " "; // Wypisujemy każdy element
         });
-        std::cout << "\n" << allPositive<< "\n" << allNegative<< "\n";
-       counter += isThresholdOK && (allPositive || allNegative);
+        
+        std::cout << "\n" << allPositive<< "\t" << isThresholdOK<< "\t" << allNegative<< "\n";
+        
+        counter += isThresholdOK && (allPositive || allNegative);
 
 
     });
